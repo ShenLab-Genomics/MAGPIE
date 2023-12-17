@@ -34,7 +34,7 @@ def predict(test, autoFE_features, selection, model_file, filename):
     print('---' + time.asctime(time.localtime(time.time())) + '--- transforming dataset\n')
     _, X_test_tr = transform(X_test, X_test, features, n_jobs=30)
     feature_list = pd.read_csv(selection).feature.tolist()
-    X_test_filtered = X_test_tr[feature_list]
+    X_test_filtered = X_test_tr[feature_list].astype('float64')
 
     print('---' + time.asctime(time.localtime(time.time())) + '--- predicting\n')
     model = joblib.load(model_file)
