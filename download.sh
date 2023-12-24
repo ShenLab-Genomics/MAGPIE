@@ -6,6 +6,7 @@ gunzip data/output/spliceai/hg38.fa.gz
 tar -zxvf data/annotation_database/master38.chromhmm.bedg.tar.gz
 
 # AnnoVar annotation file
+wget -O data/output/annovar/humandb/hg38_phastConsElements100way.txt.gz http://www.openbioinformatics.org/annovar/download/hg38_phastConsElements100way.txt.gz
 wget -O data/output/annovar/humandb/hg38_refGene.txt.gz http://www.openbioinformatics.org/annovar/download/hg38_refGene.txt.gz
 wget -O data/output/annovar/humandb/hg38_refGeneMrna.fa.gz http://www.openbioinformatics.org/annovar/download/hg38_refGeneMrna.fa.gz
 wget -O data/output/annovar/humandb/hg38_refGeneVersion.txt.gz http://www.openbioinformatics.org/annovar/download/hg38_refGeneVersion.txt.gz
@@ -15,6 +16,7 @@ wget -O data/output/annovar/humandb/hg38_dbnsfp41a.txt.gz http://www.openbioinfo
 wget -O data/output/annovar/humandb/hg38_dbnsfp41a.txt.idx.gz http://www.openbioinformatics.org/annovar/download/hg38_dbnsfp41a.txt.idx.gz
 wget -O data/output/annovar/humandb/hg38_gnomad30_genome.txt.gz http://www.openbioinformatics.org/annovar/download/hg38_gnomad30_genome.txt.gz
 wget -O data/output/annovar/humandb/hg38_gnomad30_genome.txt.idx.gz http://www.openbioinformatics.org/annovar/download/hg38_gnomad30_genome.txt.idx.gz
+gunzip data/output/annovar/humandb/hg38_phastConsElements100way.txt.gz
 gunzip data/output/annovar/humandb/hg38_refGene.txt.gz
 gunzip data/output/annovar/humandb/hg38_refGeneMrna.fa.gz
 gunzip data/output/annovar/humandb/hg38_refGeneVersion.txt.gz
