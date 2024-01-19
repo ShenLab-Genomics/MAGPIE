@@ -26,13 +26,16 @@ def predict(test, autoFE_features, selection, model_file, filename):
                     'omim_Autosomal_dominant', 'omim_Autosomal_recessive',
                     'omim_X_linked_dominant', 'omim_X_linked_recessive', 'omim_other']
 
+    train = pd.read_csv('data/datasets/train.csv', low_memory=False)
     for col in feature_list:
         test[col] = test[col].replace('-', np.nan).replace('.', np.nan)
     features = joblib.load(autoFE_features)
+
+    X_train = train[feature_list].astype('float64')
     X_test = test[feature_list].astype('float64')
 
     print('---' + time.asctime(time.localtime(time.time())) + '--- transforming dataset\n')
-    _, X_test_tr = transform(X_test, X_test, features, n_jobs=30)
+    _, X_test_tr = transform(X_train, X_test, features, n_jobs=30)
     feature_list = pd.read_csv(selection).feature.tolist()
     X_test_filtered = X_test_tr[feature_list].astype('float64')
 

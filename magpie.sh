@@ -8,13 +8,16 @@ ANNOVAR_DATA_DIR="data/output/annovar/"
 SPLICEAI_DATA_DIR="data/output/spliceai/"
 TEST_FILE="data/datasets/test.csv"
 TRAIN_FILE="data/datasets/denovo.csv"
+MODEL_FILE="data/result/MAGPIE.model"
+FEATURE_FILE="data/result/openFE.features"
+SELECTION_FILE="data/result/selection.csv"
 
 if [ $# -eq 0 ]; then
   echo "No arguments provided. Please use 'bash magpie.sh --help' to get more info."
   exit 1
 else
   SHORT_OPTS="p:"
-  LONG_OPTS="mode:,input_file:,train_file:,test_file:,help,visualization" ## 選項後有冒號代表包含參數
+  LONG_OPTS="mode:,input_file:,train_file:,test_file:,model_file:,feature:,selection:,help,visualization" ## 選項後有冒號代表包含參數
 
   opt=$(getopt -o $SHORT_OPTS --long $LONG_OPTS --name "$(basename "$0")" -- "$@")
   eval set --"$opt"
@@ -25,6 +28,9 @@ else
       --input_file) TRAIN_FILE=$(readlink -f "$2"); shift 2;;
       --train_file) TRAIN_FILE=$(readlink -f "$2"); shift 2;;
       --test_file) TEST_FILE=$(readlink -f "$2"); shift 2;;
+      --model_file) MODEL_FILE=$(readlink -f "$2"); shift 2;;
+      --feature) FEATURE_FILE=$(readlink -f "$2"); shift 2;;
+      --selection) SELECTION_FILE=$(readlink -f "$2"); shift 2;;
       --visualization) VISUALIZATION=1; shift;;
       --help) HELP=1; shift;;
       --) shift; break;;
@@ -38,6 +44,9 @@ Usage: $(basename "$0") [--mode {running mode of MAGPIE}] | default: pred | pred
                  [--input_file {path of train file}] | required when mode is train
                  [--train_file {path of train file of trained model}] | required when mode is pred
                  [--test_file {path of test file}] | required when mode is pred
+                 [--model_file {path of model file}] | required when mode is pred
+                 [--feature_file {path of feature list file}] | required when mode is pred
+                 [--selection_file {path of selection list file}] | required when mode is pred
                  [--visualization] | Visualize MAGPIE prediction results or not.
                  [--help] | display usage of MAGPIE script
 EOF
@@ -52,9 +61,9 @@ TEST_FILE_NAME=${TEST_FILE_NAME%.*}
 
 if [ "$MODE" = "pred" ]; then
   if [ "$VISUALIZATION" = 1 ]; then
-    python python/magpie.py --mode pred --test_file "$TEST_FILE" --visualization
+    python python/magpie.py --mode pred --test_file "$TEST_FILE" --model_file "$MODEL_FILE" --feature "$FEATURE_FILE" --selection "$SELECTION_FILE" --visualization
   else
-    python python/magpie.py --mode pred --test_file "$TEST_FILE"
+    python python/magpie.py --mode pred --test_file "$TEST_FILE" --model_file "$MODEL_FILE" --feature "$FEATURE_FILE" --selection "$SELECTION_FILE"
   fi
 elif [ "$MODE" = 'train' ]; then
   python python/magpie.py --mode prepare --input_file "${TRAIN_FILE}"
