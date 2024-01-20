@@ -67,9 +67,9 @@ if [ "$MODE" = "pred" ]; then
   fi
 elif [ "$MODE" = 'train' ]; then
   python python/magpie.py --mode prepare --input_file "${TRAIN_FILE}"
-  perl ${ANNOVAR_DIR}table_annovar.pl ${ANNOVAR_DATA_DIR}"${TEST_FILE_NAME}".avinput ${ANNOVAR_DATA_DIR}humandb/ -buildver hg38 -out ${ANNOVAR_DATA_DIR}"${TEST_FILE_NAME}" -remove -protocol refGene,phastConsElements100way,gnomad30_genome,dbnsfp33a,dbnsfp42a -operation g,r,f,f,f -csvout
+  perl ${ANNOVAR_DIR}table_annovar.pl ${ANNOVAR_DATA_DIR}"${TRAIN_FILE_NAME}".avinput ${ANNOVAR_DATA_DIR}humandb/ -buildver hg38 -out ${ANNOVAR_DATA_DIR}"${TRAIN_FILE_NAME}" -remove -protocol refGene,phastConsElements100way,gnomad30_genome,dbnsfp33a,dbnsfp42a -operation g,r,f,f,f -csvout
   conda activate spliceai
-  spliceai -I ${SPLICEAI_DATA_DIR}"${TEST_FILE_NAME}".vcf -O ${SPLICEAI_DATA_DIR}"${TEST_FILE_NAME}"_out.vcf -R ${SPLICEAI_DATA_DIR}hg38.fa -A grch38
+  spliceai -I ${SPLICEAI_DATA_DIR}"${TRAIN_FILE_NAME}".vcf -O ${SPLICEAI_DATA_DIR}"${TRAIN_FILE_NAME}"_out.vcf -R ${SPLICEAI_DATA_DIR}hg38.fa -A grch38
   conda deactivate
   python python/magpie.py --mode merge --input_file "${ANNOVAR_DATA_DIR}${TRAIN_FILE_NAME}.hg38_multianno.csv" --spliceai_out "${SPLICEAI_DATA_DIR}/${TRAIN_FILE_NAME}_out.vcf"
   matlab -nodesktop -nosplash -r "filename=${TEMP_DIR}${TRAIN_FILE}" ${BPCA_DIR}MAGPIE_fill.m
