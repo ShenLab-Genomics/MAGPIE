@@ -14,18 +14,35 @@ Use `conda env create -f magpie.yml` to create the conda environment is recomman
 6. OMIM database(application required).
 
 ### Usage
-#### Use pretrained MAGPIE model to predict annotated files
+Reminder: running MAGPIE on single CPU may take some time because single process of autoFE.
+
+#### Input format
+MAGPIE supports variants in CSV format as input. The input file should contain at least 5 columns in the header as follows. [Sample file](data/datasets/test.csv)
+
+|  Chr  | Start |  End  |  Ref  |  Alt  |  ...  |
+| ----- | ----- | ----- | ----- | ----- | ----- |
+
+#### Use pretrained MAGPIE model to predict variants
+
 1. Install packages listed in requirements or use magpie conda environment.
 
-2. Run `bash magpie.sh --mode pred --test_file [filepath] --visualization` e.g. `bash magpie.sh --mode pred --test_file data/datasets/test.csv --visualization`
+##### Annotated variants
+
+2. Run `source magpie.sh --mode pred --test_file [filepath] --file_state annotated --visualization` e.g. `source magpie.sh --mode pred --test_file data/datasets/test.csv --file_state annotated --visualization`
+
+
+##### Unannotated variants
+
+2. Run `source magpie.sh --mode pred --test_file [filepath] --file_state unannotated --visualization` e.g. `source magpie.sh --mode pred --test_file data/datasets/test.csv --file_state unannotated --visualization`
+
 Results would be saved in `data/result`.
 
-Reminder: running MAGPIE on single CPU may take some time because single process of autoFE.
+
 #### Train MAGPIE model from denovo
 1. Download and decompress required database for annotating using `bash download.sh`.
 2. Apply for AnnoVar access, and place all execuatable annotation tools in `./annovar`.
 3. Apply for OMIM database access, and place 'genemap2.txt' in `data/annotation_database`.
-4. Install packages and pieces of software manually or use `Dockerfile` to create a docker image. 
+4. Install packages and pieces of software manually or use `Dockerfile` to create and run a docker image. 
     ```
     docker build -t magpie .
     docker run -it magpie
@@ -36,6 +53,3 @@ Model would be saved in `output/result/`.
 
 ### Technical support
 Please feel free to contact me(yichengliu at zju.edu.cn) for technical support.
-
-
-
