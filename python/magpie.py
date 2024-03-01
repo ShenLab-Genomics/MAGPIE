@@ -24,6 +24,8 @@ parser.add_argument('--spliceai_output', type=str, dest='spliceai_output', requi
                     help='Filename of output file of SpliceAI annotation.')
 parser.add_argument('-m', '--mode', type=str, dest='mode', required=True,
                     help='Mode of running magpie, train/pred supported.')
+parser.add_argument('--file_state', type=str, dest='file_state', required=True,
+                    help='State of file to predict, annotated/unannotated supported.')
 parser.add_argument('--visualization', action='store_true', default = False,
                     help = 'Enable MAGPIE results visualization mode. Files are stored in /output/visualization/')
 args = parser.parse_args()
@@ -34,11 +36,11 @@ feature = args.feature
 selection = args.selection
 spliceai_output = args.spliceai_output
 mode = args.mode
+file_state = args.file_state
 visualization = args.visualization
 
 if mode == 'pred':
-    test = pd.read_csv(test_file, low_memory = False)
-    test_pred = predict(test, feature, selection, model_file, os.path.splitext(os.path.basename(test_file))[0])
+    test_pred = predict(test_file, feature, selection, model_file, os.path.splitext(os.path.basename(test_file))[0], file_state)
     if visualization:
         visualize(test_pred, os.path.splitext(os.path.basename(test_file))[0])
 
@@ -48,7 +50,6 @@ elif mode == 'prepare':
 elif mode == 'merge':
     data = annotate(input_file, spliceai_output)
     prepare_training_data(data).to_csv(os.path.join(root, f"data/temp/{os.path.splitext(os.path.basename(input_file))[0].replace('.hg38_multianno', '')}.csv"), index = False)
-
 
 elif mode == 'train':
     train(input_file)

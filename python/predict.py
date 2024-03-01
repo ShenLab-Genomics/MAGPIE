@@ -8,7 +8,7 @@ from openfe import openfe, transform
 root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-def predict(test, autoFE_features, selection, model_file, filename):
+def predict(test_file, autoFE_features, selection, model_file, filename, file_state):
     feature_list = ['phastConsElements100way', 'phyloP100way_vertebrate',
                     'phyloP20way_mammalian', 'phastCons100way_vertebrate',
                     'phastCons20way_mammalian', 'SiPhy_29way_logOdds',
@@ -26,7 +26,15 @@ def predict(test, autoFE_features, selection, model_file, filename):
                     'omim_Autosomal_dominant', 'omim_Autosomal_recessive',
                     'omim_X_linked_dominant', 'omim_X_linked_recessive', 'omim_other']
 
-    train = pd.read_csv('data/datasets/train.csv', low_memory=False)
+    train = pd.read_csv('data/datasets/train.csv', low_memory=False)    
+    test = pd.read_csv(test_file, low_memory = False)
+
+    if file_state == 'unannotated':
+        bpca_file = os.path.join(root, f'data/temp/{os.path.splitext(os.path.basename(test_file))[0]}_bpca.csv')
+        data_bpca = pd.read_csv(bpca_file, header = None)
+        data_bpca.columns = test.columns[7:]
+        test = pd.concat([test.iloc[:, :7], data_bpca], axis = 1)
+
     for col in feature_list:
         test[col] = test[col].replace('-', np.nan).replace('.', np.nan)
     features = joblib.load(autoFE_features)
