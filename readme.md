@@ -42,11 +42,8 @@ Results would be saved in `data/result`.
 1. Download and decompress required database for annotating using `bash download.sh`.
 2. Apply for AnnoVar access, and place all execuatable annotation tools in `./annovar`.
 3. Apply for OMIM database access, and place 'genemap2.txt' in `data/annotation_database`.
-4. Install packages and pieces of software manually or use `Dockerfile` to create and run a docker image. 
-    ```
-    docker build -t magpie .
-    docker run -it magpie
-    ```
+
+4. Install MATLAB CLI manually.
 
 5. Run `source magpie.sh --mode train --input_file [filepath]` e.g. `source magpie.sh --mode train --input_file data/datasets/denovo.csv`.
 Model would be saved in `output/result/`.
